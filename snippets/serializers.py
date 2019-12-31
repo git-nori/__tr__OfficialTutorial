@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 class SnippetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Snippet
-        fields = ['id', 'title', 'code', 'linenos', 'language', 'style']
+        fields = ['id', 'title', 'code', 'linenos', 'language', 'style', 'owner']
 
     def create(self, validated_data):
+        owner = serializers.ReadOnlyField(source='owner.username')
         return Snippet.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

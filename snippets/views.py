@@ -9,6 +9,10 @@ class SnippetList(generics.ListAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
 
+    # serializerのcreateメソッドに'owner'が渡される => snippetの作成時にUser(外部キー)を関連付ける
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Snippet.objects.all()
