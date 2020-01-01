@@ -19,6 +19,16 @@ def api_root(request, format=None):
     })
 
 
+# 不要だったら削除
+class SnippetHighlight(generics.GenericAPIView):
+    queryset = Snippet.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]  # snippetコードをHTMLにレンダリングするため(tutorialに依存)
+
+    def get(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
+
+
 class SnippetList(generics.ListAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
